@@ -1,11 +1,13 @@
-﻿namespace Task_Management_Backend.Models.Domains;
-public class Task
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Task_Management_Backend.Models.Domains;
+public abstract class Task
 {
     [Key]
-    public int id { get; set; }
-    public string name { get; set; }
-    public DateTime created { get; set; }
-    public bool is_compeleted { get; set; }
-    public bool is_important { get; set }
-    public List<TasksInCategory>? tasks_in_category { get; set; }
+    public int Id { get; set; }
+    public string? Name { get; set; }
+    public DateTime Created { get; set; }
+    public bool IsCompeleted { get; set; }
+    public bool IsImportant { get; set; }
+    public List<TasksInCategory>? TasksInCategory { get; set; }
 }

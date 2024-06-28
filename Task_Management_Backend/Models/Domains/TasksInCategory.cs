@@ -1,11 +1,13 @@
-﻿namespace Task_Management_Backend.Models.Domains;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class TasksInCategory
+namespace Task_Management_Backend.Models.Domains;
+
+public abstract class TasksInCategory
 {
     [Key]
-    public int task_id { get; set; }
-    public Task? tasks { get; set; }
+    public int TaskId { get; set; }
+    public Task? Tasks { get; set; }
     [Key]
-    public int category_id { get; set; }
-    public Categories? categories { get; set; }
+    public int CategoryId { get; set; }
+    public Categories? Categories { get; set; }
 }
