@@ -1,0 +1,22 @@
+﻿services:
+  task_management_backend:
+    image: task_management_backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=root123
+      - POSTGRES_USER=root
+      - POSTGRES_DB=task_management
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
