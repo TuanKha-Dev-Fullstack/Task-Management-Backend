@@ -3,6 +3,7 @@ public class Task : BaseEntity
 {
     public bool IsCompeleted { get; set; }
     public bool IsImportant { get; set; }
+    // Navigation Properties
     public int? CategoryId { get; set; }
     public Categories? Category { get; set; }
 }

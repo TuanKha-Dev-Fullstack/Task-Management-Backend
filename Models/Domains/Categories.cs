@@ -2,5 +2,6 @@
 
 public class Categories : BaseEntity
 {
+    // Navigation Properties
     public List<Task>? Tasks { get; set; }
 }
