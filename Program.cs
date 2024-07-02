@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Task_Management_Backend.Data;
+using Task_Management_Backend.Repositories.Category.Interfaces;
+using Task_Management_Backend.Repositories.Category.Queries;
 using Task_Management_Backend.Repositories.Task.Interfaces;
 using Task_Management_Backend.Repositories.Task.Queries;
 
@@ -15,6 +17,7 @@ builder.Services.AddDbContext<AppDbContext>(option =>
     option.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 // Add services
 builder.Services.AddScoped<ITask, QTask>();
+builder.Services.AddScoped<ICategory, QCategory>();
 
 var app = builder.Build();
 
