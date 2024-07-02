@@ -1,6 +1,5 @@
 using Task_Management_Backend.Data;
 using Task_Management_Backend.Repositories.Task.Interfaces;
-
 namespace Task_Management_Backend.Repositories.Task.Queries;
 
 public class QTask(AppDbContext context) : ITask
@@ -14,7 +13,7 @@ public class QTask(AppDbContext context) : ITask
         {
             Name = name
         };
-        context.Tasks.Add(newTask);
+        await context.Tasks.AddAsync(newTask);
         await context.SaveChangesAsync();
         return newTask;
     }

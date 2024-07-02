@@ -27,9 +27,9 @@ namespace Task_Management_Backend.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                if (e.GetType() == typeof(DbException))
-                    return BadRequest("An error occurred in the database");
-                return BadRequest("The system is experiencing an error, please call the administrator");
+                return BadRequest(e.GetType() == typeof(DbException) 
+                    ? "An error occurred in the database" 
+                    : "The system is experiencing an error, please call the administrator");
             }
         }
     }
