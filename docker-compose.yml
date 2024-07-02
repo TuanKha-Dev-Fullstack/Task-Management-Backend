@@ -1,9 +1,4 @@
 ﻿services:
-  task_management_backend:
-    image: task_management_backend
-    build:
-      context: .
-      dockerfile: Dockerfile
   db:
     image: postgres
     ports:
@@ -14,7 +9,7 @@
       - POSTGRES_DB=task_management
     restart: always
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
     networks:
       - default
 
@@ -24,4 +19,3 @@ networks:
 
 volumes: 
   db:
-    driver: local
