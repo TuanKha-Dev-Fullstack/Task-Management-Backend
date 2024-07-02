@@ -1,15 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 using Task_Management_Backend.Data;
+using Task_Management_Backend.Repositories.Task.Interfaces;
+using Task_Management_Backend.Repositories.Task.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Add DbContext
 builder.Services.AddDbContext<AppDbContext>(option => 
     option.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Add services
+builder.Services.AddScoped<ITask, QTask>();
 
 var app = builder.Build();
 
@@ -21,5 +26,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapControllers();
 
 app.Run();

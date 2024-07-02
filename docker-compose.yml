@@ -12,11 +12,16 @@
       - POSTGRES_PASSWORD=root123
       - POSTGRES_USER=root
       - POSTGRES_DB=task_management
+    restart: always
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - ./db:/var/lib/postgresql/data
     networks:
       - default
 
 networks:
   default:
     driver: bridge
+
+volumes: 
+  db:
+    driver: local
