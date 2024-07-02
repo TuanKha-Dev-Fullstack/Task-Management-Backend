@@ -10,5 +10,5 @@ public abstract class BaseEntity
     [Required(ErrorMessage = "Name field is required")]
     [MaxLength(255, ErrorMessage = "Name field cannot exceed 255 characters")]
     public required string Name { get; set; }
-    public DateTime Created { get; set; } = DateTime.Now;
+    public DateTime Created { get; set; } = DateTime.UtcNow;
 }
