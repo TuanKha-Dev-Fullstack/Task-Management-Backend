@@ -50,5 +50,29 @@ namespace Task_Management_Backend.Controllers
                     : "The system is experiencing an error, please call the administrator");
             }
         }
+        /// <summary>Marks a task as finished</summary>
+        /// <param name="id">The id of the task</param>
+        /// <returns>
+        /// Returns a message indicating that the task was marked as finished successfully
+        /// or an error message in case of an exception
+        /// </returns>
+        [HttpPatch("MarkAsFinished")]
+        public async Task<IActionResult> MarkAsFinished([FromForm] int id)
+        {
+            try
+            {
+                var task = await taskService.MarkAsFinished(id);
+                if (task == null)
+                    return NotFound("Task not found");
+                return Ok("Marked task successfully");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest(e.GetType() == typeof(DbException) 
+                    ? "An error occurred in the database" 
+                    : "The system is experiencing an error, please call the administrator");
+            }
+        }
     }
 }
