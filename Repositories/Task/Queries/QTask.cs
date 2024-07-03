@@ -28,4 +28,21 @@ public class QTask(AppDbContext context) : ITask
             .ToListAsync();
         return unfinishedTask;
     }
+    /// <summary>Mark a task as finished</summary>
+    /// <param name="id">The id of the task</param>
+    /// <returns>The updated task</returns>
+    public async Task<Models.Domains.Task?> MarkAsFinished(int id)
+    {
+        // Get the task by id
+        var task = await context.Tasks
+            .Where(t => t.Id == id)
+            .FirstOrDefaultAsync();
+        // If the task is not found, return null
+        if (task == null)
+            return null;
+        // Mark the task as finished
+        task.IsCompeleted = !task.IsCompeleted;
+        await context.SaveChangesAsync();
+        return task;
+    }
 }
