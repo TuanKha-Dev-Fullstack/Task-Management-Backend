@@ -5,4 +5,5 @@ namespace Task_Management_Backend.Repositories.Category.Interfaces;
 public interface ICategory
 {
     Task<Categories> AddCategory(string name);
+    Task<List<Categories>> ListCategory();
 }
