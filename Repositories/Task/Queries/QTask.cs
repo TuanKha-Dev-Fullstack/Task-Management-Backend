@@ -45,4 +45,11 @@ public class QTask(AppDbContext context) : ITask
         await context.SaveChangesAsync();
         return task;
     }
+    /// <summary>Get all finished tasks</summary>
+    /// <returns>All finished tasks</returns>
+    public async Task<List<Models.Domains.Task>> FinishedTasks()
+    {
+        var finishedTasks = await context.Tasks.Where(t => t.IsCompeleted == true).ToListAsync();
+        return finishedTasks;
+    }
 }
