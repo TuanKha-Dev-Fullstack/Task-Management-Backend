@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Task_Management_Backend.Data;
 using Task_Management_Backend.Repositories.Task.Interfaces;
 namespace Task_Management_Backend.Repositories.Task.Queries;
@@ -16,5 +17,15 @@ public class QTask(AppDbContext context) : ITask
         await context.Tasks.AddAsync(newTask);
         await context.SaveChangesAsync();
         return newTask;
+    }
+    /// <summary>Get all unfinished tasks</summary>
+    /// <returns>List of all unfinished tasks</returns>
+    public async Task<List<Models.Domains.Task>> UnfinishedTasks()
+    {
+        var unfinishedTask = await context.Tasks
+            .Where(t => t.IsCompeleted == false)
+            .OrderByDescending(t => t.Created)
+            .ToListAsync();
+        return unfinishedTask;
     }
 }
