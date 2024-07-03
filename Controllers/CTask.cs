@@ -74,5 +74,23 @@ namespace Task_Management_Backend.Controllers
                     : "The system is experiencing an error, please call the administrator");
             }
         }
+        /// <summary>Gets all finished tasks</summary>
+        /// <returns>All finished tasks</returns>
+        [HttpGet("FinishedTasks")]
+        public async Task<IActionResult> FinishedTasks()
+        {
+            try
+            {
+                var finishedTasks = await taskService.FinishedTasks();
+                return Ok(finishedTasks);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest(e.GetType() == typeof(DbException) 
+                    ? "An error occurred in the database" 
+                    : "The system is experiencing an error, please call the administrator");
+            }
+        }
     }
 }
