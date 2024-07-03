@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Task_Management_Backend.Data;
 using Task_Management_Backend.Models.Domains;
 using Task_Management_Backend.Repositories.Category.Interfaces;
@@ -18,5 +19,12 @@ public class QCategory(AppDbContext context) : ICategory
         await context.Categories.AddAsync(category);
         await context.SaveChangesAsync();
         return category;
+    }
+    /// <summary>Get all categories</summary>
+    /// <returns>List of categories</returns>
+    public async Task<List<Categories>> ListCategory()
+    {
+        var categories = await context.Categories.ToListAsync();
+        return categories;
     }
 }

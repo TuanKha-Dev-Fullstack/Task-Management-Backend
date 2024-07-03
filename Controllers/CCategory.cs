@@ -30,5 +30,23 @@ namespace Task_Management_Backend.Controllers
                     : "The system is experiencing an error, please call the administrator");
             }
         }
+        /// <summary>Get all categories</summary>
+        /// <returns>List of categories</returns>
+        [HttpGet("ListCategory")]
+        public async Task<IActionResult> ListCategory()
+        {
+            try
+            {
+                var categories = await categoryService.ListCategory();
+                return Ok(categories);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest(e.GetType() == typeof(DbException) 
+                    ? "An error occurred in the database" 
+                    : "The system is experiencing an error, please call the administrator");
+            }
+        }
     }
 }
