@@ -52,4 +52,16 @@ public class QTask(AppDbContext context) : ITask
         var finishedTasks = await context.Tasks.Where(t => t.IsCompeleted == true).ToListAsync();
         return finishedTasks;
     }
+    /// <summary>Mark a task as important or not</summary>
+    /// <param name="id">The id of the task</param>
+    /// <returns>The updated task</returns>
+    public async Task<Models.Domains.Task?> MarkImportant(int id)
+    {
+        var task = await context.Tasks.Where(t => t.Id == id).FirstOrDefaultAsync();
+        if (task == null)
+            return null;
+        task.IsImportant = !task.IsImportant;
+        await context.SaveChangesAsync();
+        return task;
+    }
 }
