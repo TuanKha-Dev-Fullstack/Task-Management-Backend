@@ -64,4 +64,11 @@ public class QTask(AppDbContext context) : ITask
         await context.SaveChangesAsync();
         return task;
     }
+    /// <summary>Get all important tasks</summary>
+    /// <returns>All important tasks</returns>
+    public async Task<List<Models.Domains.Task>> ImportantTasks()
+    {
+        var importantTasks = await context.Tasks.Where(t => t.IsImportant == true).ToListAsync();
+        return importantTasks;
+    }
 }
