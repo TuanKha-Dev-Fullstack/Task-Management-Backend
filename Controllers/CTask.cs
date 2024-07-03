@@ -116,5 +116,26 @@ namespace Task_Management_Backend.Controllers
                     : "The system is experiencing an error, please call the administrator");
             }
         }
+        /// <summary>Get all important tasks</summary>
+        /// <returns>
+        /// Message indicating that the task was marked
+        /// or an error message in case of an exception
+        /// </returns>
+        [HttpGet("ImportantTasks")]
+        public async Task<IActionResult> ImportantTasks()
+        {
+            try
+            {
+                var importantTasks = await taskService.ImportantTasks();
+                return Ok(importantTasks);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest(e.GetType() == typeof(DbException) 
+                    ? "An error occurred in the database" 
+                    : "The system is experiencing an error, please call the administrator");
+            }
+        }
     }
 }
