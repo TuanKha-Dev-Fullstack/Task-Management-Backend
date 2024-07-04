@@ -1,5 +1,6 @@
 using System.Data.Common;
 using Microsoft.AspNetCore.Mvc;
+using Task_Management_Backend.Extends.Messages;
 using Task_Management_Backend.Repositories.Category.Interfaces;
 
 namespace Task_Management_Backend.Controllers
@@ -8,6 +9,7 @@ namespace Task_Management_Backend.Controllers
     [ApiController]
     public class Category(ICategory categoryService) : ControllerBase
     {
+        private readonly MessageProvider _message = new MessageProvider();
         /// <summary>Handle HTTP POST requests to add a new category</summary>
         /// <param name="name">the name of the new category</param>
         /// <returns>
@@ -20,14 +22,14 @@ namespace Task_Management_Backend.Controllers
             try
             {
                 await categoryService.AddCategory(name);
-                return Ok("Added new category successfully");
+                return Ok(string.Format(_message.GetMessage("Created"), "category"));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return BadRequest(e.GetType() == typeof(DbException) 
-                    ? "An error occurred in the database" 
-                    : "The system is experiencing an error, please call the administrator");
+                    ? _message.GetMessage("DatabaseError")
+                    : _message.GetMessage("SystemError"));
             }
         }
         /// <summary>Handle HTTP GET requests to list all categories</summary>
@@ -47,8 +49,8 @@ namespace Task_Management_Backend.Controllers
             {
                 Console.WriteLine(e);
                 return BadRequest(e.GetType() == typeof(DbException) 
-                    ? "An error occurred in the database" 
-                    : "The system is experiencing an error, please call the administrator");
+                    ? _message.GetMessage("DatabaseError")
+                    : _message.GetMessage("SystemError"));
             }
         }
         /// <summary>Handle HTTP PATCH requests to update a category</summary>
@@ -65,15 +67,15 @@ namespace Task_Management_Backend.Controllers
             try
             {
                 var category = await categoryService.UpdateCategory(id, name);
-                if (category == null) return NotFound("Category not found");
-                return Ok("Updated category successfully");
+                if (category == null) return NotFound(string.Format(_message.GetMessage("NotFoundField"), "Category"));
+                return Ok(string.Format(_message.GetMessage("Updated"), "category"));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return BadRequest(e.GetType() == typeof(DbException) 
-                    ? "An error occurred in the database" 
-                    : "The system is experiencing an error, please call the administrator");
+                    ? _message.GetMessage("DatabaseError")
+                    : _message.GetMessage("SystemError"));
             }
         }
         /// <summary>Handle HTTP DELETE requests to delete a category</summary>
@@ -89,15 +91,15 @@ namespace Task_Management_Backend.Controllers
             try
             {
                 var category = await categoryService.DeleteCategory(id);
-                if (category == null) return NotFound("Category not found");
-                return Ok("Deleted category successfully");
+                if (category == null) return NotFound(string.Format(_message.GetMessage("NotFoundField"), "Category"));
+                return Ok(string.Format(_message.GetMessage("Deleted"), "category"));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return BadRequest(e.GetType() == typeof(DbException) 
-                    ? "An error occurred in the database" 
-                    : "The system is experiencing an error, please call the administrator");
+                    ? _message.GetMessage("DatabaseError")
+                    : _message.GetMessage("SystemError"));
             }
         }
     }

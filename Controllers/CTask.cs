@@ -1,5 +1,6 @@
 using System.Data.Common;
 using Microsoft.AspNetCore.Mvc;
+using Task_Management_Backend.Extends.Messages;
 using Task_Management_Backend.Repositories.Task.Interfaces;
 
 namespace Task_Management_Backend.Controllers
@@ -8,6 +9,7 @@ namespace Task_Management_Backend.Controllers
     [ApiController]
     public class Task(ITask taskService) : ControllerBase
     {
+        private readonly MessageProvider _message = new MessageProvider();
         /// <summary>Handles HTTP POST requests to add a new task</summary>
         /// <param name="name">The name of the new task to be added, provided in the request body</param>
         /// <param name="categoryId">The id of the category of the new task</param>
@@ -21,14 +23,14 @@ namespace Task_Management_Backend.Controllers
             try
             {
                 await taskService.AddTask(name, categoryId);
-                return Ok("Added new task Successfully");
+                return Ok(string.Format(_message.GetMessage("Created"), "task"));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return BadRequest(e.GetType() == typeof(DbException) 
-                    ? "An error occurred in the database" 
-                    : "The system is experiencing an error, please call the administrator");
+                    ? _message.GetMessage("DatabaseError")
+                    : _message.GetMessage("SystemError"));
             }
         }
         /// <summary>Handles HTTP GET requests to get all unfinished tasks</summary>
@@ -48,8 +50,8 @@ namespace Task_Management_Backend.Controllers
             {
                 Console.WriteLine(e);
                 return BadRequest(e.GetType() == typeof(DbException) 
-                    ? "An error occurred in the database" 
-                    : "The system is experiencing an error, please call the administrator");
+                    ? _message.GetMessage("DatabaseError")
+                    : _message.GetMessage("SystemError"));
             }
         }
         /// <summary>Handles HTTP PATCH requests to mark a task as finished</summary>
@@ -65,16 +67,16 @@ namespace Task_Management_Backend.Controllers
             try
             {
                 var task = await taskService.MarkAsFinished(id);
-                if (task == null)
-                    return NotFound("Task not found");
-                return Ok("Marked task successfully");
+                if (task == null) 
+                    return NotFound(string.Format(_message.GetMessage("NotFoundField"), "Task"));
+                return Ok(string.Format(_message.GetMessage("Marked"), "task"));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return BadRequest(e.GetType() == typeof(DbException) 
-                    ? "An error occurred in the database" 
-                    : "The system is experiencing an error, please call the administrator");
+                    ? _message.GetMessage("DatabaseError")
+                    : _message.GetMessage("SystemError"));
             }
         }
         /// <summary>Handles HTTP GET requests to get all finished tasks</summary>
@@ -94,8 +96,8 @@ namespace Task_Management_Backend.Controllers
             {
                 Console.WriteLine(e);
                 return BadRequest(e.GetType() == typeof(DbException) 
-                    ? "An error occurred in the database" 
-                    : "The system is experiencing an error, please call the administrator");
+                    ? _message.GetMessage("DatabaseError")
+                    : _message.GetMessage("SystemError"));
             }
         }
         /// <summary>Handles HTTP PATCH requests to mark a task as important</summary>
@@ -112,15 +114,15 @@ namespace Task_Management_Backend.Controllers
             {
                 var task = await taskService.MarkImportant(id);
                 if (task == null)
-                    return NotFound("Task not found");
-                return Ok("Marked task successfully");
+                    return NotFound(string.Format(_message.GetMessage("NotFoundField"), "Task"));
+                return Ok(string.Format(_message.GetMessage("Marked"), "task"));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return BadRequest(e.GetType() == typeof(DbException) 
-                    ? "An error occurred in the database" 
-                    : "The system is experiencing an error, please call the administrator");
+                    ? _message.GetMessage("DatabaseError")
+                    : _message.GetMessage("SystemError"));
             }
         }
         /// <summary>Handles HTTP GET requests to get all important tasks</summary>
@@ -140,8 +142,8 @@ namespace Task_Management_Backend.Controllers
             {
                 Console.WriteLine(e);
                 return BadRequest(e.GetType() == typeof(DbException) 
-                    ? "An error occurred in the database" 
-                    : "The system is experiencing an error, please call the administrator");
+                    ? _message.GetMessage("DatabaseError")
+                    : _message.GetMessage("SystemError"));
             }
         }
         /// <summary>Handles HTTP PATCH requests to update a task</summary>
@@ -159,15 +161,15 @@ namespace Task_Management_Backend.Controllers
             {
                 var task = await taskService.UpdateTask(id, name);
                 if (task == null)
-                    return NotFound("Task not found");
-                return Ok("Updated task successfully");
+                    return NotFound(string.Format(_message.GetMessage("NotFoundField"), "Task"));
+                return Ok(string.Format(_message.GetMessage("Updated"), "task"));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return BadRequest(e.GetType() == typeof(DbException) 
-                    ? "An error occurred in the database" 
-                    : "The system is experiencing an error, please call the administrator");
+                    ? _message.GetMessage("DatabaseError")
+                    : _message.GetMessage("SystemError"));
             }
         }
         /// <summary>Handles HTTP DELETE requests to delete a task</summary>
@@ -184,15 +186,15 @@ namespace Task_Management_Backend.Controllers
             {
                 var task = await taskService.DeleteTask(id);
                 if (task == null)
-                    return NotFound("Task not found");
-                return Ok("Deleted task successfully");
+                    return NotFound(string.Format(_message.GetMessage("NotFoundField"), "Task"));
+                return Ok(string.Format(_message.GetMessage("Deleted"), "task"));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return BadRequest(e.GetType() == typeof(DbException)
-                    ? "An error occurred in the database"
-                    : "The system is experiencing an error, please call the administrator");
+                return BadRequest(e.GetType() == typeof(DbException) 
+                    ? _message.GetMessage("DatabaseError")
+                    : _message.GetMessage("SystemError"));
             }
         }
         /// <summary>Handles HTTP GET requests to get all tasks by category</summary>
@@ -209,15 +211,15 @@ namespace Task_Management_Backend.Controllers
             {
                 var tasks = await taskService.TasksByCategory(categoryId);
                 if (tasks == null)
-                    return NotFound("Category not found");
+                    return NotFound(string.Format(_message.GetMessage("NotFoundField"), "Task"));
                 return Ok(tasks);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return BadRequest(e.GetType() == typeof(DbException)
-                    ? "An error occurred in the database"
-                    : "The system is experiencing an error, please call the administrator");
+                return BadRequest(e.GetType() == typeof(DbException) 
+                    ? _message.GetMessage("DatabaseError")
+                    : _message.GetMessage("SystemError"));
             }
         }
     }
