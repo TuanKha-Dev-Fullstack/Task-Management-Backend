@@ -84,4 +84,16 @@ public class QTask(AppDbContext context) : ITask
         await context.SaveChangesAsync();
         return task;
     }
+    /// <summary>Deletes a task</summary>
+    /// <param name="id">The id of the task</param>
+    /// <returns>The deleted task</returns>
+    public async Task<Models.Domains.Task?> DeleteTask(int id)
+    {
+        var task = await context.Tasks.Where(t => t.Id == id).FirstOrDefaultAsync();
+        if (task == null)
+            return null;
+        context.Remove(task);
+        await context.SaveChangesAsync();
+        return task;
+    }
 }

@@ -163,5 +163,29 @@ namespace Task_Management_Backend.Controllers
             }
             
         }
+        /// <summary>Deletes a task</summary>
+        /// <param name="id">The id of the task</param>
+        /// <returns>
+        /// Message indicating that the task was deleted
+        /// or an error message in case of an exception
+        /// </returns>
+        [HttpDelete("DeleteTask")]
+        public async Task<IActionResult> DeleteTask([FromForm] int id)
+        {
+            try
+            {
+                var task = await taskService.DeleteTask(id);
+                if (task == null)
+                    return NotFound("Task not found");
+                return Ok("Deleted task successfully");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest(e.GetType() == typeof(DbException)
+                    ? "An error occurred in the database"
+                    : "The system is experiencing an error, please call the administrator");
+            }
+        }
     }
 }
