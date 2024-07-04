@@ -8,4 +8,5 @@ public interface ITask
     Task<List<Models.Domains.Task>> FinishedTasks();
     Task<Models.Domains.Task?> MarkImportant(int id);
     Task<List<Models.Domains.Task>> ImportantTasks();
+    Task<Models.Domains.Task?> UpdateTask(int id, string name);
 }
