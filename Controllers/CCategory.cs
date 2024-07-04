@@ -73,5 +73,29 @@ namespace Task_Management_Backend.Controllers
                     : "The system is experiencing an error, please call the administrator");
             }
         }
+        /// <summary>Handle HTTP DELETE requests to delete a category</summary>
+        /// <param name="id">The id of the category</param>
+        /// <returns>
+        /// The deleted category
+        /// or an error message in case of an exception
+        /// or a message indicating that the category was not found
+        /// </returns>
+        [HttpDelete("DeleteCategory")]
+        public async Task<IActionResult> DeleteCategory([FromForm] int id)
+        {
+            try
+            {
+                var category = await categoryService.DeleteCategory(id);
+                if (category == null) return NotFound("Category not found");
+                return Ok("Deleted category successfully");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest(e.GetType() == typeof(DbException) 
+                    ? "An error occurred in the database" 
+                    : "The system is experiencing an error, please call the administrator");
+            }
+        }
     }
 }

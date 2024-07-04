@@ -11,7 +11,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<Task>()
             .HasOne(t => t.Category)
             .WithMany(c => c.Tasks)
-            .HasForeignKey(t => t.CategoryId);
+            .HasForeignKey(t => t.CategoryId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
     public DbSet<Task> Tasks { get; set; }
     public DbSet<Categories> Categories { get; set; }
