@@ -27,4 +27,16 @@ public class QCategory(AppDbContext context) : ICategory
         var categories = await context.Categories.ToListAsync();
         return categories;
     }
+    /// <summary>Handle update category</summary>
+    /// <param name="id">The id of the category</param>
+    /// <param name="name">The new name of the category</param>
+    /// <returns>The updated category</returns>
+    public async Task<Categories?> UpdateCategory(int id, string name)
+    {
+        var category =  await context.Categories.FindAsync(id);
+        if (category == null) return null;
+        category.Name = name;
+        await context.SaveChangesAsync();
+        return category;
+    }
 }
