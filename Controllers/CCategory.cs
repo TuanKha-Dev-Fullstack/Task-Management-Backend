@@ -4,7 +4,7 @@ using Task_Management_Backend.Repositories.Category.Interfaces;
 
 namespace Task_Management_Backend.Controllers
 {
-    [Route("api/category")]
+    [Route("api/v1/categories")]
     [ApiController]
     public class Category(ICategory categoryService) : ControllerBase
     {
@@ -30,9 +30,12 @@ namespace Task_Management_Backend.Controllers
                     : "The system is experiencing an error, please call the administrator");
             }
         }
-        /// <summary>Get all categories</summary>
-        /// <returns>List of categories</returns>
-        [HttpGet("ListCategory")]
+        /// <summary>Handle HTTP GET requests to list all categories</summary>
+        /// <returns>
+        /// List of categories
+        /// or an error message in case of an exception
+        /// </returns>
+        [HttpGet]
         public async Task<IActionResult> ListCategory()
         {
             try
@@ -48,7 +51,7 @@ namespace Task_Management_Backend.Controllers
                     : "The system is experiencing an error, please call the administrator");
             }
         }
-        /// <summary>Handle HTTP PUT requests to update a category</summary>
+        /// <summary>Handle HTTP PATCH requests to update a category</summary>
         /// <param name="id">The id of the category</param>
         /// <param name="name">The new name of the category</param>
         /// <returns>
@@ -56,8 +59,8 @@ namespace Task_Management_Backend.Controllers
         /// or an error message in case of an exception
         /// or a message indicating that the category was not found
         /// </returns>
-        [HttpPatch("UpdateCategory")]
-        public async Task<IActionResult> UpdateCategory([FromForm] int id, [FromForm] string name)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateCategory(int id, [FromForm] string name)
         {
             try
             {
@@ -80,8 +83,8 @@ namespace Task_Management_Backend.Controllers
         /// or an error message in case of an exception
         /// or a message indicating that the category was not found
         /// </returns>
-        [HttpDelete("DeleteCategory")]
-        public async Task<IActionResult> DeleteCategory([FromForm] int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCategory(int id)
         {
             try
             {
