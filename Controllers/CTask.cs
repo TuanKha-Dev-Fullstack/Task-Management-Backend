@@ -137,5 +137,31 @@ namespace Task_Management_Backend.Controllers
                     : "The system is experiencing an error, please call the administrator");
             }
         }
+        /// <summary>Updates a task</summary>
+        /// <param name="id">The id of the task</param>
+        /// <param name="name">New name of the task</param>
+        /// <returns>
+        /// Message indicating that the task was updated
+        /// or an error message in case of an exception
+        /// </returns>
+        [HttpPatch("UpdateTask")]
+        public async Task<IActionResult> UpdateTask([FromForm] int id, [FromForm] string name)
+        {
+            try
+            {
+                var task = await taskService.UpdateTask(id, name);
+                if (task == null)
+                    return NotFound("Task not found");
+                return Ok("Updated task successfully");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest(e.GetType() == typeof(DbException) 
+                    ? "An error occurred in the database" 
+                    : "The system is experiencing an error, please call the administrator");
+            }
+            
+        }
     }
 }

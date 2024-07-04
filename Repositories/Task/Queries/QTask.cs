@@ -71,4 +71,17 @@ public class QTask(AppDbContext context) : ITask
         var importantTasks = await context.Tasks.Where(t => t.IsImportant == true).ToListAsync();
         return importantTasks;
     }
+    /// <summary>Update a task</summary>
+    /// <param name="id">The id of the task</param>
+    /// <param name="name">New name of the task</param>
+    /// <returns>Task updated</returns>
+    public async Task<Models.Domains.Task?> UpdateTask(int id, string name)
+    {
+        var task = await context.Tasks.Where(t => t.Id == id).FirstOrDefaultAsync();
+        if (task == null)
+            return null;
+        task.Name = name;
+        await context.SaveChangesAsync();
+        return task;
+    }
 }
