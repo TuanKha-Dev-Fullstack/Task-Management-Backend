@@ -12,16 +12,17 @@ namespace Task_Management_Backend.Controllers
         /// Handles HTTP POST requests to add a new task
         /// </summary>
         /// <param name="name">The name of the new task to be added, provided in the request body</param>
+        /// <param name="categoryId"></param>
         /// <returns>
         /// Returns a message indicating that the task was added successfully
         /// or an error message in case of an exception
         /// </returns>
         [HttpPost("AddTask")]
-        public async Task<IActionResult> AddTask([FromForm] string name)
+        public async Task<IActionResult> AddTask([FromForm] string name, [FromForm] int? categoryId = null)
         {
             try
             {
-                await taskService.AddTask(name);
+                await taskService.AddTask(name, categoryId);
                 return Ok("Added new task Successfully");
             }
             catch (Exception e)

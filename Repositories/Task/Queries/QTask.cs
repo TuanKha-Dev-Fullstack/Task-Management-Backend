@@ -7,12 +7,14 @@ public class QTask(AppDbContext context) : ITask
 {
     /// <summary>Handle saves a new task</summary>
     /// <param name="name">name of the new task</param>
+    /// <param name="categoryId"></param>
     /// <returns>Returns the newly created task</returns>
-    public async Task<Models.Domains.Task> AddTask(string name)
+    public async Task<Models.Domains.Task> AddTask(string name, int? categoryId)
     {
         var newTask = new Models.Domains.Task
         {
-            Name = name
+            Name = name,
+            CategoryId = categoryId
         };
         await context.Tasks.AddAsync(newTask);
         await context.SaveChangesAsync();
