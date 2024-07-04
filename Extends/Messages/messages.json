@@ -1,0 +1,9 @@
+{
+  "DatabaseError": "An error occurred in the database",
+  "SystemError": "The system is experiencing an error, please call the administrator",
+  "NotFoundField": "{0} not found",
+  "Created": "Added new {0} successfully",
+  "Updated": "Updated {0} successfully",
+  "Deleted": "Deleted {0} successfully",
+  "Marked": "Marked {0} successfully"
+}

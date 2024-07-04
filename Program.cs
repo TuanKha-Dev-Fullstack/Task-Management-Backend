@@ -4,9 +4,8 @@ using Task_Management_Backend.Repositories.Category.Interfaces;
 using Task_Management_Backend.Repositories.Category.Queries;
 using Task_Management_Backend.Repositories.Task.Interfaces;
 using Task_Management_Backend.Repositories.Task.Queries;
-
-var builder = WebApplication.CreateBuilder(args);
-
+// Initialize builder
+var builder = WebApplication.CreateBuilder(args); 
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -19,17 +18,19 @@ builder.Services.AddDbContext<AppDbContext>(option =>
 builder.Services.AddScoped<ITask, QTask>();
 builder.Services.AddScoped<ICategory, QCategory>();
 builder.Services.AddScoped<ICheckCategory, QCheckCategory>();
-
-var app = builder.Build();
-
+// Build app
+var app = builder.Build(); // 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+app.UseSwagger();
+app.UseSwaggerUI();
+// Cors
+app.UseCors(options => options
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+// UseHttpsRedirection
 app.UseHttpsRedirection();
+// Map controllers
 app.MapControllers();
-
+// Run app
 app.Run();

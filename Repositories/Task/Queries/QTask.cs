@@ -23,11 +23,19 @@ public class QTask(AppDbContext context, ICheckCategory checkCategory) : ITask
     }
     /// <summary>Get all unfinished tasks</summary>
     /// <returns>List of all unfinished tasks</returns>
-    public async Task<List<Models.Domains.Task>> UnfinishedTasks()
+    public async Task<List<Models.DTOs.Task>> UnfinishedTasks()
     {
         var unfinishedTask = await context.Tasks
             .Where(t => t.IsCompeleted == false)
             .OrderByDescending(t => t.Created)
+            .Select(task =>  new Models.DTOs.Task()
+            {
+                Id = task.Id,
+                Name = task.Name,
+                IsCompeleted = task.IsCompeleted,
+                IsImportant = task.IsImportant,
+                Created = task.Created,
+            })
             .ToListAsync();
         return unfinishedTask;
     }
@@ -50,9 +58,19 @@ public class QTask(AppDbContext context, ICheckCategory checkCategory) : ITask
     }
     /// <summary>Get all finished tasks</summary>
     /// <returns>All finished tasks</returns>
-    public async Task<List<Models.Domains.Task>> FinishedTasks()
+    public async Task<List<Models.DTOs.Task>> FinishedTasks()
     {
-        var finishedTasks = await context.Tasks.Where(t => t.IsCompeleted == true).ToListAsync();
+        var finishedTasks = await context.Tasks
+            .Where(t => t.IsCompeleted == true)
+            .Select(task => new Models.DTOs.Task()
+            {
+                Id = task.Id,
+                Name = task.Name,
+                IsCompeleted = task.IsCompeleted,
+                IsImportant = task.IsImportant,
+                Created = task.Created,
+            })
+            .ToListAsync();
         return finishedTasks;
     }
     /// <summary>Mark a task as important or not</summary>
@@ -69,9 +87,19 @@ public class QTask(AppDbContext context, ICheckCategory checkCategory) : ITask
     }
     /// <summary>Get all important tasks</summary>
     /// <returns>All important tasks</returns>
-    public async Task<List<Models.Domains.Task>> ImportantTasks()
+    public async Task<List<Models.DTOs.Task>> ImportantTasks()
     {
-        var importantTasks = await context.Tasks.Where(t => t.IsImportant == true).ToListAsync();
+        var importantTasks = await context.Tasks
+            .Where(t => t.IsImportant == true)
+            .Select(task => new Models.DTOs.Task()
+            {
+                Id = task.Id,
+                Name = task.Name,
+                IsCompeleted = task.IsCompeleted,
+                IsImportant = task.IsImportant,
+                Created = task.Created,
+            })
+            .ToListAsync();
         return importantTasks;
     }
     /// <summary>Update a task</summary>
@@ -99,28 +127,23 @@ public class QTask(AppDbContext context, ICheckCategory checkCategory) : ITask
         await context.SaveChangesAsync();
         return task;
     }
-
     /// <summary>Get all tasks by category</summary>
     /// <param name="categoryId">the id of the category</param>
-    /// <returns>
-    /// list of tasks
-    /// or null if not found
-    /// or an error message in case of an exception</returns>
-    public async Task<List<Models.Domains.Task>?> TasksByCategory(int categoryId)
+    /// <returns>list of tasks</returns>
+    public async Task<List<Models.DTOs.Task>?> TasksByCategory(int categoryId)
     {
         var check = await checkCategory.CheckCategory(categoryId);
         if (!check)
             return null;
         var tasks = await context.Tasks
             .Where(t => t.CategoryId == categoryId)
-            .Select(task => new Models.Domains.Task()
+            .Select(task => new Models.DTOs.Task()
             {
                 Id = task.Id,
                 Name = task.Name,
                 IsCompeleted = task.IsCompeleted,
                 IsImportant = task.IsImportant,
                 Created = task.Created,
-                CategoryId = task.CategoryId,
             })
             .ToListAsync();
         return tasks;

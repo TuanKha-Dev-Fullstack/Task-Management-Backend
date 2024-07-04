@@ -22,9 +22,16 @@ public class QCategory(AppDbContext context) : ICategory
     }
     /// <summary>Get all categories</summary>
     /// <returns>List of categories</returns>
-    public async Task<List<Categories>> ListCategory()
+    public async Task<List<Models.DTOs.Category>> ListCategory()
     {
-        var categories = await context.Categories.ToListAsync();
+        var categories = await context.Categories
+            .Select(c => new Models.DTOs.Category()
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Created = c.Created
+            })
+            .ToListAsync();
         return categories;
     }
     /// <summary>Handle update category</summary>
