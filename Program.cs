@@ -18,6 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(option =>
 // Add services
 builder.Services.AddScoped<ITask, QTask>();
 builder.Services.AddScoped<ICategory, QCategory>();
+builder.Services.AddScoped<ICheckCategory, QCheckCategory>();
 
 var app = builder.Build();
 

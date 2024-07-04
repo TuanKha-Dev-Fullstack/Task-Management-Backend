@@ -1,5 +1,6 @@
 using System.Data.Common;
 using Microsoft.AspNetCore.Mvc;
+using Task_Management_Backend.Repositories.Category.Interfaces;
 using Task_Management_Backend.Repositories.Task.Interfaces;
 
 namespace Task_Management_Backend.Controllers
@@ -179,6 +180,27 @@ namespace Task_Management_Backend.Controllers
                 if (task == null)
                     return NotFound("Task not found");
                 return Ok("Deleted task successfully");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest(e.GetType() == typeof(DbException)
+                    ? "An error occurred in the database"
+                    : "The system is experiencing an error, please call the administrator");
+            }
+        }
+        /// <summary>Gets all tasks by category</summary>
+        /// <param name="categoryId">The id of the category</param>
+        /// <returns>All tasks by category</returns>
+        [HttpGet("TasksByCategory")]
+        public async Task<IActionResult> TasksByCategory(int categoryId)
+        {
+            try
+            {
+                var tasks = await taskService.TasksByCategory(categoryId);
+                if (tasks == null)
+                    return NotFound("Category not found");
+                return Ok(tasks);
             }
             catch (Exception e)
             {
