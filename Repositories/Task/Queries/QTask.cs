@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Task_Management_Backend.Data;
+using Task_Management_Backend.Repositories.Category.Interfaces;
 using Task_Management_Backend.Repositories.Task.Interfaces;
 namespace Task_Management_Backend.Repositories.Task.Queries;
 
-public class QTask(AppDbContext context) : ITask
+public class QTask(AppDbContext context, ICheckCategory checkCategory) : ITask
 {
     /// <summary>Handle saves a new task</summary>
     /// <param name="name">name of the new task</param>
@@ -97,5 +98,31 @@ public class QTask(AppDbContext context) : ITask
         context.Remove(task);
         await context.SaveChangesAsync();
         return task;
+    }
+
+    /// <summary>Get all tasks by category</summary>
+    /// <param name="categoryId">the id of the category</param>
+    /// <returns>
+    /// list of tasks
+    /// or null if not found
+    /// or an error message in case of an exception</returns>
+    public async Task<List<Models.Domains.Task>?> TasksByCategory(int categoryId)
+    {
+        var check = await checkCategory.CheckCategory(categoryId);
+        if (!check)
+            return null;
+        var tasks = await context.Tasks
+            .Where(t => t.CategoryId == categoryId)
+            .Select(task => new Models.Domains.Task()
+            {
+                Id = task.Id,
+                Name = task.Name,
+                IsCompeleted = task.IsCompeleted,
+                IsImportant = task.IsImportant,
+                Created = task.Created,
+                CategoryId = task.CategoryId,
+            })
+            .ToListAsync();
+        return tasks;
     }
 }
