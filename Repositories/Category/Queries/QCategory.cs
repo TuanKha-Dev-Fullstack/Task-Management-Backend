@@ -39,4 +39,15 @@ public class QCategory(AppDbContext context) : ICategory
         await context.SaveChangesAsync();
         return category;
     }
+    /// <summary>Handle delete category</summary>
+    /// <param name="id">The id of the category</param>
+    /// <returns>The deleted category</returns>
+    public async Task<Categories?> DeleteCategory(int id)
+    {
+        var category =  await context.Categories.FindAsync(id);
+        if (category == null) return null;
+        context.Categories.Remove(category);
+        await context.SaveChangesAsync();
+        return category;
+    }
 }
