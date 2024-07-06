@@ -1,0 +1,31 @@
+﻿services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      - default
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=root123
+      - POSTGRES_USER=root
+      - POSTGRES_DB=task_management
+    restart: always
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
+
+volumes: 
+  db:
