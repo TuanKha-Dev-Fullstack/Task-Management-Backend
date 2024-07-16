@@ -33,17 +33,17 @@ namespace Task_Management_Backend.Controllers
                     : _message.GetMessage("SystemError"));
             }
         }
-        /// <summary>Handles HTTP GET requests to get all unfinished tasks</summary>
+        /// <summary>Handles HTTP GET requests to get all tasks</summary>
         /// <returns>
-        /// List of all unfinished tasks
+        /// List of all tasks
         /// or an error message in case of an exception
         /// </returns>
-        [HttpGet("unfinished")]
-        public async Task<IActionResult> UnfinishedTasks()
+        [HttpGet]
+        public async Task<IActionResult> Tasks()
         {
             try
             {
-                var unfinishedTasks = await taskService.UnfinishedTasks();
+                var unfinishedTasks = await taskService.GetTasks();
                 return Ok(unfinishedTasks);
             }
             catch (Exception e)
@@ -70,27 +70,6 @@ namespace Task_Management_Backend.Controllers
                 if (task == null) 
                     return NotFound(string.Format(_message.GetMessage("NotFoundField"), "Task"));
                 return Ok(string.Format(_message.GetMessage("Marked"), "task"));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return BadRequest(e.GetType() == typeof(DbException) 
-                    ? _message.GetMessage("DatabaseError")
-                    : _message.GetMessage("SystemError"));
-            }
-        }
-        /// <summary>Handles HTTP GET requests to get all finished tasks</summary>
-        /// <returns>
-        /// All finished tasks
-        /// or an error message in case of an exception
-        /// </returns>
-        [HttpGet("finished")]
-        public async Task<IActionResult> FinishedTasks()
-        {
-            try
-            {
-                var finishedTasks = await taskService.FinishedTasks();
-                return Ok(finishedTasks);
             }
             catch (Exception e)
             {
