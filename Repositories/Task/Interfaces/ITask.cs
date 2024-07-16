@@ -4,12 +4,10 @@ public interface ITask
 {
     // Add a new task
     Task<Models.Domains.Task> AddTask(string name, int? categoryId);
-    // Get all unfinished tasks
-    Task<List<Models.DTOs.Task>> UnfinishedTasks();
+    // Get all tasks
+    Task<List<Models.DTOs.Task>> GetTasks();
     // Mark a task as finished
     Task<Models.Domains.Task?> MarkAsFinished(int id);
-    // Get all finished tasks
-    Task<List<Models.DTOs.Task>> FinishedTasks();
     // Mark a task as important or not
     Task<Models.Domains.Task?> MarkImportant(int id);
     // Get all important tasks
