@@ -17,7 +17,7 @@ namespace Task_Management_Backend.Controllers
         /// or an error message in case of an exception
         /// </returns>
         [HttpPost]
-        public async Task<IActionResult> AddCategory([FromBody] string name)
+        public async Task<IActionResult> AddCategory([FromForm] string name)
         {
             try
             {
