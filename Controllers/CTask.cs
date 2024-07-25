@@ -10,19 +10,21 @@ namespace Task_Management_Backend.Controllers
     public class Task(ITask taskService) : ControllerBase
     {
         private readonly MessageProvider _message = new MessageProvider();
+
         /// <summary>Handles HTTP POST requests to add a new task</summary>
         /// <param name="name">The name of the new task to be added, provided in the request body</param>
         /// <param name="categoryId">The id of the category of the new task</param>
+        /// <param name="isImportant"></param>
         /// <returns>
         /// Returns a message indicating that the task was added successfully
         /// or an error message in case of an exception
         /// </returns>
         [HttpPost]
-        public async Task<IActionResult> AddTask([FromForm] string name, [FromForm] int? categoryId = null)
+        public async Task<IActionResult> AddTask([FromForm] string name, [FromForm] int? categoryId = null, [FromForm] bool isImportant = false)
         {
             try
             {
-                await taskService.AddTask(name, categoryId);
+                await taskService.AddTask(name, categoryId, isImportant);
                 return Ok(string.Format(_message.GetMessage("Created"), "task"));
             }
             catch (Exception e)

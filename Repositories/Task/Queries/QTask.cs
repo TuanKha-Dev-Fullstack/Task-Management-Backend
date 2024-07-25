@@ -9,13 +9,15 @@ public class QTask(AppDbContext context, ICheckCategory checkCategory) : ITask
     /// <summary>Handle saves a new task</summary>
     /// <param name="name">name of the new task</param>
     /// <param name="categoryId"></param>
+    /// <param name="isImportant"></param>
     /// <returns>Returns the newly created task</returns>
-    public async Task<Models.Domains.Task> AddTask(string name, int? categoryId)
+    public async Task<Models.Domains.Task> AddTask(string name, int? categoryId, bool isImportant = false)
     {
         var newTask = new Models.Domains.Task
         {
             Name = name,
-            CategoryId = categoryId
+            CategoryId = categoryId,
+            IsImportant = isImportant
         };
         await context.Tasks.AddAsync(newTask);
         await context.SaveChangesAsync();
