@@ -3,7 +3,7 @@ namespace Task_Management_Backend.Repositories.Task.Interfaces;
 public interface ITask
 {
     // Add a new task
-    Task<Models.Domains.Task> AddTask(string name, int? categoryId);
+    Task<Models.Domains.Task> AddTask(string name, int? categoryId, bool isImportant = false);
     // Get all tasks
     Task<List<Models.DTOs.Task>> GetTasks();
     // Mark a task as finished
